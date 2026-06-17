@@ -6,7 +6,12 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { generateText } from 'ai';
-import { openai } from '@ai-sdk/openai';
+import { createOpenAI } from '@ai-sdk/openai';
+
+const openai = createOpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+  baseURL: 'https://lanyiapi.com/v1',
+});
 import { fetchWebsite, fetchMultiplePages, batchSearch } from '@/lib/tools';
 import { buildAnalysisPrompt, SYSTEM_PROMPT } from '@/lib/prompts';
 
@@ -144,3 +149,4 @@ export async function OPTIONS() {
     },
   });
 }
+fix: use custom openai base url
