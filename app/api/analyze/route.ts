@@ -95,7 +95,7 @@ export async function POST(request: NextRequest) {
     // 步骤5: 调用AI生成报告
     console.log(`[${customerName}] Step 5/5: 调用AI生成报告...`);
     const { text: report } = await generateText({
-      model: openai('gpt-4o'),
+      model: openai('gpt-5.5'),
       system: SYSTEM_PROMPT,
       prompt: userPrompt,
       temperature: 0.3,
