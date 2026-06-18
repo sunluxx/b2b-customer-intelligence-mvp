@@ -31,13 +31,14 @@ export default function Home() {
     setCurrentCustomer(data.customerName);
 
     try {
-      const response = await fetch('/api/analyze', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
+const response = await fetch('/api/analyze', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify(data),
+  signal: controller.signal,
+});
 
       const result = await response.json();
 
