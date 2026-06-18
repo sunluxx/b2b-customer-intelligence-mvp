@@ -10,7 +10,7 @@ import { createOpenAI } from '@ai-sdk/openai';
 
 const openai = createOpenAI({
   apiKey: process.env.OPENAI_API_KEY,
-  baseURL: 'https://lanyiapi.com/v1',
+  baseURL: 'https://lanyiapi.com',
 });
 import { fetchWebsite, fetchMultiplePages, batchSearch } from '@/lib/tools';
 import { buildAnalysisPrompt, SYSTEM_PROMPT } from '@/lib/prompts';
