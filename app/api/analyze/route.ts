@@ -91,7 +91,8 @@ export async function POST(request: NextRequest) {
       Object.fromEntries(successfulPages),
       Object.fromEntries(successfulSearches)
     );
-
+console.log(`[${customerName}] Prompt Length: ${userPrompt.length}`);
+    
     // 步骤5: 调用AI生成报告
     console.log(`[${customerName}] Step 5/5: 调用AI生成报告...`);
     const { text: report } = await generateText({
@@ -102,6 +103,8 @@ export async function POST(request: NextRequest) {
       maxTokens: 3000,
     });
 
+    console.log(`[${customerName}] Report Length: ${report.length}`);
+    
     const duration = ((Date.now() - startTime) / 1000).toFixed(1);
     console.log(`[${customerName}] 报告生成完成，耗时: ${duration}秒`);
 
