@@ -149,4 +149,3 @@ export async function OPTIONS() {
     },
   });
 }
-fix: use custom openai base url
