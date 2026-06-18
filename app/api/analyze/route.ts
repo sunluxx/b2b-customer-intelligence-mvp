@@ -49,14 +49,7 @@ export async function POST(request: NextRequest) {
     const commonPaths = [
       '/about-us',
       '/about',
-      '/company',
       '/products',
-      '/product',
-      '/en/about-us',
-      '/en/products',
-      '/en/company',
-      '/om-oss',
-      '/produkter',
     ];
 
     const additionalPages = await fetchMultiplePages(website, commonPaths);
@@ -70,9 +63,7 @@ export async function POST(request: NextRequest) {
     const searchQueries = [
       `"${customerName}" ${country} LinkedIn employees CEO founder`,
       `"${customerName}" ${country} lighting LED products revenue employee size`,
-      `"${customerName}" ${country} import China supplier manufacturing`,
       `"${customerName}" ${country} project reference customer case study`,
-      `"${customerName}" ${country} news 2024 2025 2026`,
     ];
 
     const searchResults = await batchSearch(searchQueries);
@@ -91,7 +82,7 @@ export async function POST(request: NextRequest) {
       Object.fromEntries(successfulPages),
       Object.fromEntries(successfulSearches)
     );
-
+    
 console.log(`[${customerName}] Prompt Length: ${userPrompt.length}`);
     
     // 步骤5: 调用AI生成报告
