@@ -99,7 +99,7 @@ export async function POST(request: NextRequest) {
       system: SYSTEM_PROMPT,
       prompt: userPrompt,
       temperature: 0.3,
-      maxTokens: 8000,
+      maxTokens: 3000,
     });
 
     const duration = ((Date.now() - startTime) / 1000).toFixed(1);
