@@ -6,7 +6,7 @@
 
 import * as cheerio from 'cheerio';
 
-const MAX_CONTENT_LENGTH = 15000;
+const MAX_CONTENT_LENGTH = 5000;
 
 /**
  * 抓取指定URL的网页内容
