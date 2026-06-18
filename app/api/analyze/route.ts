@@ -84,6 +84,8 @@ export async function POST(request: NextRequest) {
     // 步骤4: 构建提示词
     console.log(`[${customerName}] Step 4/5: 构建AI提示词...`);
     const userPrompt = buildAnalysisPrompt(
+
+      console.log(`[${customerName}] Prompt Length: ${userPrompt.length}`);
       customerName,
       website,
       country,
