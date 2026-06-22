@@ -28,6 +28,11 @@ export async function POST(request: NextRequest) {
   
   const startTime = Date.now();
 
+  console.log("ENV CHECK:", {
+  key: process.env.OPENAI_API_KEY?.slice(0, 8),
+  base: process.env.OPENAI_BASE_URL,
+});
+
   try {
     // 解析请求体
     const body = await request.json();
