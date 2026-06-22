@@ -24,6 +24,8 @@ export const dynamic = 'force-dynamic';
  * 接收客户信息，生成完整情报分析报告
  */
 export async function POST(request: NextRequest) {
+  console.log('API KEY:', process.env.OPENAI_API_KEY);
+  
   const startTime = Date.now();
 
   try {
