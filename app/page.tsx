@@ -31,25 +31,64 @@ export default function Home() {
     setCurrentCustomer(data.customerName);
 
     try {
-const response = await fetch('/api/analyze', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  body: JSON.stringify(data),
-});
-
-      const result = await response.json();
+      const response = await fetch('/api/analyze', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
 
       if (!response.ok) {
-        throw new Error(result.details || result.error || '分析请求失败');
+        // 非流式错误（如400/500），正常解析JSON报错
+        const errData = await response.json();
+        throw new Error(errData.details || errData.error || '分析请求失败');
       }
 
+      // ✅ 流式读取：边生成边显示，不会超时
+      const reader = response.body!.getReader();
+      const decoder = new TextDecoder();
+      let reportText = '';
+      let buffer = '';
+      const startTime = Date.now();
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || ''; // 保留不完整的最后一行等下次拼接
+
+        for (const line of lines) {
+          // Vercel AI SDK 流格式：每行以 0: 开头，后跟JSON字符串
+          if (line.startsWith('0:')) {
+            try {
+              const token = JSON.parse(line.slice(2));
+              reportText += token;
+            } catch {
+              // 忽略解析异常行
+            }
+          }
+        }
+      }
+
+      if (!reportText) {
+        throw new Error('报告内容为空，请重试');
+      }
+
+      const duration = ((Date.now() - startTime) / 1000).toFixed(1);
+
       setResult({
-        report: result.report,
-        customerName: result.customerName,
-        meta: result.meta,
+        report: reportText,
+        customerName: data.customerName,
+        meta: {
+          duration: `${duration}秒`,
+          websiteContentLength: 0,   // 流式模式下meta由后端日志记录
+          additionalPagesFetched: 0,
+          searchesCompleted: 0,
+          generatedAt: new Date().toISOString(),
+        },
       });
+
     } catch (err) {
       const message = err instanceof Error ? err.message : '未知错误';
       setError(message);
@@ -175,7 +214,7 @@ const response = await fetch('/api/analyze', {
       <footer className="border-t border-gray-200 bg-white mt-16">
         <div className="max-w-6xl mx-auto px-4 py-6 text-center">
           <p className="text-xs text-gray-400">
-            B2B Customer Intelligence MVP v1.0 · Powered by OpenAI GPT-4o & Tavily Search
+            B2B Customer Intelligence MVP v1.0 · Powered by OpenAI GPT-5.5 & Tavily Search
           </p>
         </div>
       </footer>
