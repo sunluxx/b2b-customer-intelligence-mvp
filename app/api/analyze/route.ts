@@ -10,7 +10,7 @@ import { createOpenAI } from '@ai-sdk/openai';
 
 const openai = createOpenAI({
   apiKey: process.env.OPENAI_API_KEY,
-  baseURL: process.env.OPENAI_BASE_URL,
+  baseURL: "https://lanyiapi.com/v1",
 });
 import { fetchWebsite, fetchMultiplePages, batchSearch } from '@/lib/tools';
 import { buildAnalysisPrompt, SYSTEM_PROMPT } from '@/lib/prompts';
@@ -33,6 +33,8 @@ export async function POST(request: NextRequest) {
   base: process.env.OPENAI_BASE_URL,
 });
 
+  console.log("FINAL BASE URL:", process.env.OPENAI_BASE_URL);
+  
   try {
     // 解析请求体
     const body = await request.json();
