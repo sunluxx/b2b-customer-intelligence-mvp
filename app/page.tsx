@@ -37,7 +37,6 @@ const response = await fetch('/api/analyze', {
     'Content-Type': 'application/json',
   },
   body: JSON.stringify(data),
-  signal: controller.signal,
 });
 
       const result = await response.json();
